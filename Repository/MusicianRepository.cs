@@ -14,7 +14,7 @@ namespace MusicHubBusiness.Repository
         {
             using (mySqlConnection)
             {
-                 mySqlConnection.Execute("INSERT INTO Musician VALUES (0,@name,@email,@password,@birth_date)", new {
+                 mySqlConnection.Execute("INSERT INTO Musician(name, email, password, birth_date) VALUES (@name,@email,@password,@birth_date)", new {
                     name = musician.name,
                     email = musician.email,
                     password = musician.password,
@@ -25,6 +25,37 @@ namespace MusicHubBusiness.Repository
             }
 
             return musician;
+        }
+
+        public Musician Login(string email, string password)
+        {
+            Musician retorno = null;
+            using (mySqlConnection)
+            {
+                retorno = mySqlConnection.Query<Musician>("SELECT * FROM Musician WHERE email = @email AND password = @password", new
+                {
+                    email = email,
+                    password = password,
+                }).FirstOrDefault();
+
+            }
+
+            return retorno;
+        }
+
+        internal object GetByEmail(string email)
+        {
+            Musician retorno = null;
+            using (mySqlConnection)
+            {
+                retorno = mySqlConnection.Query<Musician>("SELECT * FROM Musician WHERE email = @email", new
+                {
+                    email = email
+                }).FirstOrDefault();
+
+            }
+
+            return retorno;
         }
 
         private Musician GetLatest()
