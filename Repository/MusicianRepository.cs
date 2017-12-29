@@ -8,8 +8,13 @@ using System.Threading.Tasks;
 
 namespace MusicHubBusiness.Repository
 {
-    public class MusicianRepository:BaseRepository
+    public class MusicianRepository:BaseRepository<Musician>
     {
+        public MusicianRepository() : base("Musician")
+        {
+            
+        }
+
         public Musician Create(Musician musician)
         {
             using (mySqlConnection)
@@ -18,7 +23,7 @@ namespace MusicHubBusiness.Repository
                     name = musician.name,
                     email = musician.email,
                     password = musician.password,
-                    birth_date = musician.birth_date.ToSQLString()
+                    birth_date = musician.birth_date.ToSQLDateString()
                 });
 
                 musician = GetLatest();
@@ -53,18 +58,6 @@ namespace MusicHubBusiness.Repository
                     email = email
                 }).FirstOrDefault();
 
-            }
-
-            return retorno;
-        }
-
-        private Musician GetLatest()
-        {
-            Musician retorno = null;
-
-            using (mySqlConnection)
-            {
-                retorno = mySqlConnection.QueryFirst<Musician>("SELECT* FROM Musician ORDER BY ID DESC LIMIT 1");
             }
 
             return retorno;

@@ -57,10 +57,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\BusinessBase.cs" />
+    <Compile Include="Business\MusicalProjectBusiness.cs" />
     <Compile Include="Business\MusicianBusiness.cs" />
+    <Compile Include="Models\MusicalGenre.cs" />
+    <Compile Include="Models\MusicalProject.cs" />
     <Compile Include="Models\Musician.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BaseRepository.cs" />
+    <Compile Include="Repository\MusicalGenreRepository.cs" />
+    <Compile Include="Repository\MusicalProjectRepository.cs" />
     <Compile Include="Repository\MusicianRepository.cs" />
     <Compile Include="Util\DateTimeExtensions.cs" />
     <Compile Include="ValidateException.cs" />
@@ -81,6 +86,12 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BearerAuthentication\BearerAuthentication.csproj">
+      <Project>{7F622A3E-2AA1-48BC-8C90-E129FDBFAD01}</Project>
+      <Name>BearerAuthentication</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

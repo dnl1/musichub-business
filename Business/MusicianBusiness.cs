@@ -12,7 +12,7 @@ namespace MusicHubBusiness.Business
     {
         public Musician Create(Musician musician)
         {
-            Validar(musician);
+            Validate(musician);
 
             MusicianRepository musicianRepository = new MusicianRepository();
             var retorno = musicianRepository.Create(musician);
@@ -28,7 +28,7 @@ namespace MusicHubBusiness.Business
             return retorno;
         }
 
-        private void VerificaEmailExiste(string email)
+        private void VerifyIfEmailExists(string email)
         {
             MusicianRepository musicianRepository = new MusicianRepository();
             var retorno = musicianRepository.GetByEmail(email);
@@ -36,7 +36,7 @@ namespace MusicHubBusiness.Business
             if (retorno != null) throw ValidateException("O e-mail está em uso!");
         }
 
-        private void Validar(Musician musician)
+        private void Validate(Musician musician)
         {
             if (string.IsNullOrEmpty(musician.name))
             {
@@ -58,7 +58,7 @@ namespace MusicHubBusiness.Business
                 throw ValidateException("Insira sua senha");
             }
 
-            VerificaEmailExiste(musician.email);
+            VerifyIfEmailExists(musician.email);
 
             if (musician.password.Length > 40)
             {

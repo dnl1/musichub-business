@@ -2,13 +2,23 @@
 
 public static class DateTimeExtensions
 {
-    public static string ToSQLString(this DateTime? dateTime)
+    public static string ToSQLDateString(this DateTime? dateTime)
     {
-        return dateTime.GetValueOrDefault().ToSQLString();
+        return dateTime.GetValueOrDefault().ToSQLDateString();
     }
 
-    public static string ToSQLString(this DateTime dateTime)
+    public static string ToSQLDateString(this DateTime dateTime)
     {
         return dateTime.ToString("yyyy-MM-dd");
+    }
+
+    public static string ToSQLDateTimeString(this DateTime? dateTime)
+    {
+        return dateTime.GetValueOrDefault().ToSQLDateTimeString();
+    }
+
+    public static string ToSQLDateTimeString(this DateTime dateTime)
+    {
+        return dateTime.ToString("yyyy-MM-dd HH:mm:ss");
     }
 }
