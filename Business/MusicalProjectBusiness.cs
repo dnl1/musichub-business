@@ -1,11 +1,10 @@
 ﻿using BearerAuthentication;
+using MusicHubBusiness.Amazon;
 using MusicHubBusiness.Models;
 using MusicHubBusiness.Repository;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Web;
 
 namespace MusicHubBusiness.Business
 {
@@ -45,8 +44,8 @@ namespace MusicHubBusiness.Business
                 throw ValidateException("O tamanho máximo do nome é 100 caracteres!");
             }
 
-            bool genderExiste = VerifyIfGenreExists(musicalProject.gender_id);
-            if (musicalProject.gender_id == 0 || !genderExiste)
+            bool genderExiste = VerifyIfGenreExists(musicalProject.musical_genre_id);
+            if (musicalProject.musical_genre_id == 0 || !genderExiste)
             {
                 throw ValidateException("Este genero musical não existe!");
             }

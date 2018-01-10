@@ -13,11 +13,11 @@ namespace MusicHubBusiness.Repository
         {
             using (mySqlConnection)
             {
-                mySqlConnection.Execute("INSERT INTO MusicalProject(name, owner_id, gender_id, created_at, updated_at) VALUES (@name ,@owner_id, @gender_id ,@created_at, @updated_at)", new
+                mySqlConnection.Execute("INSERT INTO MusicalProject(name, owner_id, musical_genre_id, created_at, updated_at) VALUES (@name ,@owner_id, @musical_genre_id,@created_at, @updated_at)", new
                 {
-                    name = musicalProject.name,
-                    owner_id = musicalProject.owner_id,
-                    gender_id = musicalProject.gender_id,
+                    musicalProject.name,
+                    musicalProject.owner_id,
+                    musicalProject.musical_genre_id,
                     created_at = musicalProject.created_at.ToSQLDateTimeString(),
                     updated_at = musicalProject.updated_at.ToSQLDateTimeString()
                 });

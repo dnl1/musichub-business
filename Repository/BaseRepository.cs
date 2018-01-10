@@ -23,7 +23,7 @@ namespace MusicHubBusiness.Repository
             this.TableName = tableName;
         }
 
-        internal T GetLatest()
+        public T GetLatest()
         {
             T retorno = default(T);
 
@@ -35,7 +35,7 @@ namespace MusicHubBusiness.Repository
             return retorno;
         }
 
-        internal T Get(int id)
+        public T Get(int id)
         {
             T retorno = default(T);
 
@@ -47,6 +47,29 @@ namespace MusicHubBusiness.Repository
             }
 
             return retorno;
+        }
+
+        public IEnumerable<T> GetAll()
+        {
+            IEnumerable<T> retorno = default(IEnumerable<T>);
+
+            using (mySqlConnection)
+            {
+                retorno = mySqlConnection.Query<T>($"SELECT * FROM {this.TableName}");
+            }
+
+            return retorno;
+        }
+
+        public void Delete(int id)
+        {
+            using (mySqlConnection)
+            {
+                mySqlConnection.Execute($"DELETE {this.TableName} WHERE ID = @Id", new
+                {
+                    ID = id
+                });
+            }
         }
 
     }
