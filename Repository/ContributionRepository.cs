@@ -13,9 +13,11 @@ namespace MusicHubBusiness.Repository
         {
             using (mySqlConnection)
             {
-                mySqlConnection.Execute("INSERT INTO Contribution(name, email, password, birth_date) VALUES (@name,@email,@password,@birth_date)", new
+                mySqlConnection.Execute("INSERT INTO Contribution(musician_id, musical_project_id, musical_project_instrument_id, musical_genre_id, status_id, timing, type_id, created_at) " +
+                    "VALUES (@musician_id, @musical_project_id, @musical_project_instrument_id, @musical_genre_id, @status_id, @timing, @type_id, @created_at)", new
                 {
                     contribution.musician_id,
+                    contribution.musical_project_id,
                     contribution.musical_genre_id,
                     contribution.musical_project_instrument_id,
                     contribution.status_id,

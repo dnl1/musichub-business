@@ -39,8 +39,8 @@
     <Reference Include="MySql.Data, Version=6.10.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.6.10.5\lib\net452\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio, Version=1.8.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.1.8.1\lib\net35\NAudio.dll</HintPath>
+    <Reference Include="NAudio, Version=1.8.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.8.4\lib\net35\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="NAudio.Lame, Version=1.0.5.22475, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.Lame.1.0.7\lib\net20\NAudio.Lame.dll</HintPath>
@@ -68,6 +68,8 @@
   <ItemGroup>
     <Compile Include="Amazon\S3Integration.cs" />
     <Compile Include="Audio\AudioConverter.cs" />
+    <Compile Include="Audio\FileArchive.cs" />
+    <Compile Include="Audio\FileHandler.cs" />
     <Compile Include="Business\BusinessBase.cs" />
     <Compile Include="Business\MusicalGenreBusiness.cs" />
     <Compile Include="Business\MusicalProjectInstrumentBusiness.cs" />

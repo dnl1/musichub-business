@@ -31,7 +31,7 @@ namespace MusicHubBusiness.Business
             {
                 throw ValidateException("Insira o id do projeto!");
             }
-            if (VerifyIfMusicalProjectExists(musicalProjectInstrument.musical_project_id))
+            if (!VerifyIfMusicalProjectExists(musicalProjectInstrument.musical_project_id))
             {
                 throw ValidateException("Insira um Id do projeto musical válido!");
             }

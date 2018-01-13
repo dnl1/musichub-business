@@ -5,54 +5,46 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
 namespace MusicHubBusiness.Audio
 {
-    public class AudioHelper
+    public class AudioHelper : IDisposable
     {
-        private string waveFileName, mp3FileName;
+        public string TempFile { get; set; }
 
         public AudioHelper()
         {
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string tempFolder = string.Format("{0}/temp", baseDirectory);
+            string tempFolder = string.Format("{0}temp", baseDirectory);
+
+            TempFile = string.Format("{0}\\{1}", tempFolder, Guid.NewGuid().ToString());
 
             Directory.CreateDirectory(tempFolder);
-
-            this.waveFileName = string.Format("{0}/tempWavFile{1}.wav", tempFolder, DateTime.Now.Ticks);
-            this.mp3FileName = string.Format("{1}/tempMp3File{1}.mp3", tempFolder, DateTime.Now.Ticks);
         }
 
-        public string WaveToMP3(HttpPostedFile httpPostedFile, int bitRate = 128)
+        public void SaveSong(FileArchive song)
         {
-            if (httpPostedFile.ContentType.Contains("mp3")) return string.Empty;
+            string[] splitedContentType = song.ContentType.Split('/');
 
-            SaveSong(httpPostedFile);
+            TempFile += string.Format(".{0}", splitedContentType[1]);
 
-            using (var reader = new AudioFileReader(waveFileName))
-            using (var writer = new LameMP3FileWriter(mp3FileName, reader.WaveFormat, bitRate))
-                reader.CopyTo(writer);
+            File.WriteAllBytes(TempFile, song.FileBytes);
 
-            return mp3FileName;
-        }
-
-        public string SaveSong(HttpPostedFile song)
-        {
-            using (Stream file = File.Create(waveFileName))
+            using (var reader = new AudioFileReader(TempFile))
             {
-                CopyStream(song.InputStream, file);
+                song.TotalTime = reader.TotalTime;
+                song.FullPath = reader.FileName;
             }
-
-            return mp3FileName;
         }
 
-        public void ClearTempFiles()
+        private void ClearTempFiles()
         {
-            File.Delete(waveFileName);
-            File.Delete(mp3FileName);
+            File.Delete(TempFile);
         }
 
         /// <summary>
@@ -68,25 +60,18 @@ namespace MusicHubBusiness.Audio
             }
         }
 
-        public TimeSpan GetTotalTime()
-        {
-            TimeSpan totalTime = new TimeSpan();
-
-            using (var reader = new AudioFileReader(mp3FileName))
-            {
-                totalTime = reader.TotalTime;
-            }
-
-            return totalTime;
-        }
-
         public void UploadToAmazon(string keyName)
         {
             S3Integration s3Integration = new S3Integration();
-            using (var reader = new AudioFileReader(mp3FileName))
+            using (var reader = new AudioFileReader(TempFile))
             {
                 s3Integration.UploadSongFile(reader, keyName);
             }
+        }
+
+        public void Dispose()
+        {
+            ClearTempFiles();
         }
     }
 }

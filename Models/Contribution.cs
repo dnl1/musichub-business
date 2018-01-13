@@ -11,6 +11,7 @@ namespace MusicHubBusiness.Models
     {
         public int id { get; set; }
         public int musician_id { get; set; }
+        public int musical_project_id { get; set; }
         public int musical_project_instrument_id { get; set; }
         public eContributionStatus status_id { get; set; }
         public eContributionType type_id { get; set; }
