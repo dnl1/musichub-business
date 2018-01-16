@@ -1,9 +1,12 @@
-﻿using Dapper;
+﻿using System;
+using System.Collections.Generic;
+using Dapper;
+using MusicHubBusiness.Enum;
 using MusicHubBusiness.Models;
 
 namespace MusicHubBusiness.Repository
 {
-    public class ContributionRepository : BaseRepository<Contribution>
+    public class ContributionRepository : BaseRepository<Contribution>, IRepository<Contribution>
     {
         public ContributionRepository() : base("Contribution")
         {
@@ -30,6 +33,35 @@ namespace MusicHubBusiness.Repository
             }
 
             return contribution;
+        }
+
+        internal IEnumerable<Contribution> GetByMusicalProjectId(int musical_project_id)
+        {
+            IEnumerable<Contribution> retorno = null;
+            using (mySqlConnection)
+            {
+                retorno = mySqlConnection.Query<Contribution>("SELECT * FROM Contribution WHERE musical_project_id = @musical_project_id", new { musical_project_id });
+
+            }
+
+            return retorno;
+        }
+
+        internal IEnumerable<Contribution> GetFreeContributions(int id)
+        {
+            IEnumerable<Contribution> retorno = null;
+            using (mySqlConnection)
+            {
+                retorno = mySqlConnection.Query<Contribution>
+                    ("SELECT * FROM Contribution WHERE musician_id = @musician_id AND type_id = @type_id", new
+                {
+                    musician_id = id,
+                    type_id = (int)eContributionType.FreeContribution
+                });
+
+            }
+
+            return retorno;
         }
     }
 }

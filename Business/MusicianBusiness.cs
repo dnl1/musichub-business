@@ -28,6 +28,14 @@ namespace MusicHubBusiness.Business
             return retorno;
         }
 
+        public IEnumerable<Musician> SearchByName(string name)
+        {
+            MusicianRepository musicianRepository = new MusicianRepository();
+            var retorno = musicianRepository.SearchByName(name);
+
+            return retorno;
+        }
+
         private void VerifyIfEmailExists(string email)
         {
             MusicianRepository musicianRepository = new MusicianRepository();

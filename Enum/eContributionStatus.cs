@@ -10,6 +10,7 @@ namespace MusicHubBusiness.Enum
     {
         WaitingForApproval = 1,
         Approved = 2,
-        refused = 3
+        Refused = 3,
+        FreeContribution = 4
     }
 }

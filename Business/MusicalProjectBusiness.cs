@@ -3,6 +3,7 @@ using MusicHubBusiness.Amazon;
 using MusicHubBusiness.Models;
 using MusicHubBusiness.Repository;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Web;
 
@@ -25,11 +26,21 @@ namespace MusicHubBusiness.Business
 
         private void PopulateDefaultProperties(MusicalProject musicalProject)
         {
-            BearerToken bearerToken = new BearerToken();
-            var activeToken = bearerToken.GetActiveToken();
-
-            musicalProject.owner_id = int.Parse(activeToken.client);
+            musicalProject.owner_id = Utitilities.GetLoggedUserId();
             musicalProject.updated_at = DateTime.Now;
+        }
+
+        public IEnumerable<MusicalProject> SearchByMusicalGenre(int musical_genre_id)
+        {
+            MusicalProjectRepository musicalProjectRepository = new MusicalProjectRepository();
+            var retorno = musicalProjectRepository.SearchByMusicalGenre(musical_genre_id);
+
+            return retorno;
+        }
+
+        public IEnumerable<Musician> Musicians(int musical_project_id)
+        {
+            throw new NotImplementedException();
         }
 
         private void Validate(MusicalProject musicalProject)

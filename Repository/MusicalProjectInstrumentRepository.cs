@@ -3,7 +3,7 @@ using MusicHubBusiness.Models;
 
 namespace MusicHubBusiness.Repository
 {
-    public class MusicalProjectInstrumentRepository : BaseRepository<MusicalProjectInstrument>
+    public class MusicalProjectInstrumentRepository : BaseRepository<MusicalProjectInstrument>, IRepository<MusicalProjectInstrument>
     {
         public MusicalProjectInstrumentRepository() : base("MusicalProjectInstrument")
         {

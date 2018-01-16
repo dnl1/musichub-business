@@ -1,9 +1,12 @@
-﻿using Dapper;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using Dapper;
 using MusicHubBusiness.Models;
 
 namespace MusicHubBusiness.Repository
 {
-    public class MusicalProjectRepository : BaseRepository<MusicalProject>
+    public class MusicalProjectRepository : BaseRepository<MusicalProject>, IRepository<MusicalProject>
     {
         public MusicalProjectRepository() : base("MusicalProject")
         {
@@ -26,6 +29,18 @@ namespace MusicHubBusiness.Repository
             }
 
             return musicalProject;
+        }
+
+        internal IEnumerable<MusicalProject> SearchByMusicalGenre(int musical_genre_id)
+        {
+                IEnumerable<MusicalProject> retorno = default(IEnumerable<MusicalProject>);
+
+                using (mySqlConnection)
+                {
+                    retorno = mySqlConnection.Query<MusicalProject>("SELECT * FROM MusicalProject WHERE musical_genre_id = @musical_genre_id", new { musical_genre_id });
+                }
+
+                return retorno;
         }
     }
 }

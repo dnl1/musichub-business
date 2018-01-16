@@ -72,6 +72,9 @@
     <Compile Include="Audio\FileHandler.cs" />
     <Compile Include="Business\BusinessBase.cs" />
     <Compile Include="Business\MusicalGenreBusiness.cs" />
+    <Compile Include="Business\RateMusicalProjectBusiness.cs" />
+    <Compile Include="Business\RateContributionBusiness.cs" />
+    <Compile Include="Business\RateMusicianBusiness.cs" />
     <Compile Include="Business\MusicalProjectInstrumentBusiness.cs" />
     <Compile Include="Business\MusicalProjectBusiness.cs" />
     <Compile Include="Business\ContributionBusiness.cs" />
@@ -83,14 +86,22 @@
     <Compile Include="Models\MusicalProjectInstrument.cs" />
     <Compile Include="Models\MusicalProject.cs" />
     <Compile Include="Models\Musician.cs" />
+    <Compile Include="Models\RateContribution.cs" />
+    <Compile Include="Models\RateMusicalProject.cs" />
+    <Compile Include="Models\RateMusician.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BaseRepository.cs" />
+    <Compile Include="Repository\Interfaces\IRepository.cs" />
+    <Compile Include="Repository\RateMusicalProjectRepository.cs" />
+    <Compile Include="Repository\RateContributionRepository.cs" />
+    <Compile Include="Repository\RateMusicianRepository.cs" />
     <Compile Include="Repository\MusicalGenreRepository.cs" />
     <Compile Include="Repository\MusicalProjectInstrumentRepository.cs" />
     <Compile Include="Repository\MusicalProjectRepository.cs" />
     <Compile Include="Repository\ContributionRepository.cs" />
     <Compile Include="Repository\MusicianRepository.cs" />
     <Compile Include="Util\DateTimeExtensions.cs" />
+    <Compile Include="Util\Utitilities.cs" />
     <Compile Include="Util\WebConfigSettings.cs" />
     <Compile Include="ValidateException.cs" />
   </ItemGroup>
@@ -106,12 +117,6 @@
     <Content Include="docs\MySqlParameter.xml" />
     <Content Include="docs\MySqlParameterCollection.xml" />
     <Content Include="docs\MySqlTransaction.xml" />
-    <Content Include="libmp3lame.32.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="libmp3lame.64.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

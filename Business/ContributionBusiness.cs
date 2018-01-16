@@ -21,9 +21,29 @@ namespace MusicHubBusiness.Business
             return retorno;
         }
 
+        public IEnumerable<Musician> GetByMusicalProjectId(int musical_project_id)
+        {
+            ContributionRepository contributionRepository = new ContributionRepository();
+            IEnumerable<Contribution> contributions = contributionRepository.GetByMusicalProjectId(musical_project_id);
+
+            IEnumerable<int> musician_ids  = contributions.Select(c => c.musician_id);
+
+            MusicianRepository musicianRepository = new MusicianRepository();
+            IEnumerable<Musician> retorno = musicianRepository.GetMusicians(musician_ids);
+
+            return retorno;
+        }
+
+        public IEnumerable<Contribution> GetFreeContributions(int id)
+        {
+            ContributionRepository contributionRepository = new ContributionRepository();
+        }
+
         private void PopulateDefaultProperties(Contribution contribution)
         {
             contribution.created_at = DateTime.Now;
+
+            if (contribution.type_id == Enum.eContributionType.FreeContribution) contribution.status_id = Enum.eContributionStatus.FreeContribution;
         }
 
         private void Validate(Contribution contribution)

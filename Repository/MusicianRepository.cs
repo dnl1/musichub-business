@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MusicHubBusiness.Repository
 {
-    public class MusicianRepository:BaseRepository<Musician>
+    public class MusicianRepository:BaseRepository<Musician>, IRepository<Musician>
     {
         public MusicianRepository() : base("Musician")
         {
@@ -42,6 +42,30 @@ namespace MusicHubBusiness.Repository
                     email = email,
                     password = password,
                 }).FirstOrDefault();
+
+            }
+
+            return retorno;
+        }
+
+        internal IEnumerable<Musician> GetMusicians(IEnumerable<int> musician_ids)
+        {
+            IEnumerable<Musician> retorno = null;
+            using (mySqlConnection)
+            {
+                retorno = mySqlConnection.Query<Musician>("SELECT * FROM Musician WHERE id IN (@musician_id)", new { musician_id = string.Join(",", musician_ids) });
+
+            }
+
+            return retorno;
+        }
+
+        internal IEnumerable<Musician> SearchByName(string name)
+        {
+            IEnumerable<Musician> retorno = null;
+            using (mySqlConnection)
+            {
+                retorno = mySqlConnection.Query<Musician>("SELECT * FROM Musician WHERE name LIKE @name", new { name = string.Format("%{0}%", name) });
 
             }
 
