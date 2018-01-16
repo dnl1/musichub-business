@@ -37,6 +37,7 @@ namespace MusicHubBusiness.Business
         public IEnumerable<Contribution> GetFreeContributions(int id)
         {
             ContributionRepository contributionRepository = new ContributionRepository();
+            return contributionRepository.GetFreeContributions(id);
         }
 
         private void PopulateDefaultProperties(Contribution contribution)
