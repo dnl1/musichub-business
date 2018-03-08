@@ -1,11 +1,7 @@
 ﻿using Dapper;
 using MySql.Data.MySqlClient;
-using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MusicHubBusiness.Repository
 {
@@ -27,10 +23,7 @@ namespace MusicHubBusiness.Repository
         {
             T retorno = default(T);
 
-            using (mySqlConnection)
-            {
-                retorno = mySqlConnection.QueryFirstOrDefault<T>($"SELECT * FROM {this.TableName} ORDER BY ID DESC LIMIT 1");
-            }
+            retorno = QueryFirst($"SELECT * FROM {this.TableName} ORDER BY ID DESC LIMIT 1");
 
             return retorno;
         }
@@ -39,12 +32,10 @@ namespace MusicHubBusiness.Repository
         {
             T retorno = default(T);
 
-            using (mySqlConnection)
+            retorno = QueryFirst($"SELECT * FROM {this.TableName} WHERE ID = @Id", new
             {
-                retorno = mySqlConnection.QueryFirstOrDefault<T>($"SELECT * FROM {this.TableName} WHERE ID = @Id", new {
-                    ID = id
-                });
-            }
+                ID = id
+            });
 
             return retorno;
         }
@@ -53,24 +44,49 @@ namespace MusicHubBusiness.Repository
         {
             IEnumerable<T> retorno = default(IEnumerable<T>);
 
-            using (mySqlConnection)
-            {
-                retorno = mySqlConnection.Query<T>($"SELECT * FROM {this.TableName}");
-            }
+            retorno = Query($"SELECT * FROM {this.TableName}");
 
             return retorno;
         }
 
         public void Delete(int id)
         {
+            Execute($"DELETE {this.TableName} WHERE ID = @Id", new
+            {
+                ID = id
+            });
+        }
+
+        public void Execute(string sql, object parameters = null)
+        {
             using (mySqlConnection)
             {
-                mySqlConnection.Execute($"DELETE {this.TableName} WHERE ID = @Id", new
-                {
-                    ID = id
-                });
+                mySqlConnection.Execute(sql, parameters);
             }
         }
 
+        public IEnumerable<T> Query(string sql, object parameters = null)
+        {
+            IEnumerable<T> retorno = default(IEnumerable<T>);
+
+            using (mySqlConnection)
+            {
+                retorno = mySqlConnection.Query<T>(sql, parameters);
+            }
+
+            return retorno;
+        }
+
+        public T QueryFirst(string sql, object parameters = null)
+        {
+            T retorno = default(T);
+
+            using (mySqlConnection)
+            {
+                retorno = mySqlConnection.QueryFirstOrDefault<T>(sql, parameters);
+            }
+
+            return retorno;
+        }
     }
 }

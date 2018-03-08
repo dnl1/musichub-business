@@ -1,20 +1,22 @@
 ﻿using MusicHubBusiness.Models;
 using MusicHubBusiness.Repository;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MusicHubBusiness.Business
 {
-    public class MusicianBusiness:BusinessBase
+    public class MusicianBusiness : BusinessBase
     {
+        private MusicianRepository musicianRepository;
+
+        public MusicianBusiness()
+        {
+            musicianRepository = new MusicianRepository();
+        }
+
         public Musician Create(Musician musician)
         {
             Validate(musician);
 
-            MusicianRepository musicianRepository = new MusicianRepository();
             var retorno = musicianRepository.Create(musician);
 
             return retorno;
@@ -22,7 +24,6 @@ namespace MusicHubBusiness.Business
 
         public Musician Login(string email, string password)
         {
-            MusicianRepository musicianRepository = new MusicianRepository();
             var retorno = musicianRepository.Login(email, password);
 
             return retorno;
@@ -30,15 +31,23 @@ namespace MusicHubBusiness.Business
 
         public IEnumerable<Musician> SearchByName(string name)
         {
-            MusicianRepository musicianRepository = new MusicianRepository();
             var retorno = musicianRepository.SearchByName(name);
+
+            return retorno;
+        }
+
+        public Musician Update(Musician musician)
+        {
+            if(musician.id == 0) throw ValidateException("O Id deve ser preenchido!");
+            Validate(musician);
+
+            var retorno = musicianRepository.Update(musician);
 
             return retorno;
         }
 
         private void VerifyIfEmailExists(string email)
         {
-            MusicianRepository musicianRepository = new MusicianRepository();
             var retorno = musicianRepository.GetByEmail(email);
 
             if (retorno != null) throw ValidateException("O e-mail está em uso!");

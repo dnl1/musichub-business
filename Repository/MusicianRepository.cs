@@ -1,29 +1,26 @@
 ﻿using Dapper;
 using MusicHubBusiness.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MusicHubBusiness.Repository
 {
-    public class MusicianRepository:BaseRepository<Musician>, IRepository<Musician>
+    public class MusicianRepository : BaseRepository<Musician>, IRepository<Musician>
     {
         public MusicianRepository() : base("Musician")
         {
-            
         }
 
         public Musician Create(Musician musician)
         {
             using (mySqlConnection)
             {
-                 mySqlConnection.Execute("INSERT INTO Musician(name, email, password, birth_date) VALUES (@name,@email,@password,@birth_date)", new {
-                    name = musician.name,
-                    email = musician.email,
-                    password = musician.password,
-                    birth_date = musician.birth_date.ToSQLDateString()
+                mySqlConnection.Execute("INSERT INTO Musician(name, email, password, birth_date) VALUES (@name,@email,@password,@birth_date)", new
+                {
+                    musician.name,
+                    musician.email,
+                    musician.password,
+                    musician.birth_date
                 });
 
                 musician = GetLatest();
@@ -39,23 +36,31 @@ namespace MusicHubBusiness.Repository
             {
                 retorno = mySqlConnection.Query<Musician>("SELECT * FROM Musician WHERE email = @email AND password = @password", new
                 {
-                    email = email,
-                    password = password,
+                    email,
+                    password,
                 }).FirstOrDefault();
-
             }
 
             return retorno;
         }
 
+        internal Musician Update(Musician musician)
+        {
+            Execute("UPDATE Musician SET name = @name, email = @email, password = @password, birth_date = @birt_hdate", new
+            {
+                musician.name,
+                musician.email,
+                musician.password,
+                musician.birth_date
+            });
+
+            return Get(musician.id);
+        }
+
         internal IEnumerable<Musician> GetMusicians(IEnumerable<int> musician_ids)
         {
             IEnumerable<Musician> retorno = null;
-            using (mySqlConnection)
-            {
-                retorno = mySqlConnection.Query<Musician>("SELECT * FROM Musician WHERE id IN (@musician_id)", new { musician_id = string.Join(",", musician_ids) });
-
-            }
+            Query("SELECT * FROM Musician WHERE id IN (@musician_id)", new { musician_id = string.Join(",", musician_ids) });
 
             return retorno;
         }
@@ -63,26 +68,20 @@ namespace MusicHubBusiness.Repository
         internal IEnumerable<Musician> SearchByName(string name)
         {
             IEnumerable<Musician> retorno = null;
-            using (mySqlConnection)
-            {
-                retorno = mySqlConnection.Query<Musician>("SELECT * FROM Musician WHERE name LIKE @name", new { name = string.Format("%{0}%", name) });
 
-            }
+            retorno = Query("SELECT * FROM Musician WHERE name LIKE @name", new { name = string.Format("%{0}%", name) });
 
             return retorno;
         }
 
-        internal object GetByEmail(string email)
+        internal Musician GetByEmail(string email)
         {
             Musician retorno = null;
-            using (mySqlConnection)
-            {
-                retorno = mySqlConnection.Query<Musician>("SELECT * FROM Musician WHERE email = @email", new
-                {
-                    email = email
-                }).FirstOrDefault();
 
-            }
+            retorno = QueryFirst("SELECT * FROM Musician WHERE email = @email", new
+            {
+                email
+            });
 
             return retorno;
         }
