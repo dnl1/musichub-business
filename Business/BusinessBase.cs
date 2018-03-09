@@ -8,7 +8,7 @@ namespace MusicHubBusiness.Business
 {
     public abstract class BusinessBase
     {
-        public ValidateException ValidateException(string message)
+        internal ValidateException ValidateException(string message)
         {
             return new ValidateException(message);
         }

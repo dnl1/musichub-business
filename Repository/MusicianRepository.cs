@@ -46,7 +46,7 @@ namespace MusicHubBusiness.Repository
 
         internal Musician Update(Musician musician)
         {
-            Execute("UPDATE Musician SET name = @name, email = @email, password = @password, birth_date = @birt_hdate", new
+            Execute("UPDATE Musician SET name = @name, email = @email, password = @password, birth_date = @birth_date", new
             {
                 musician.name,
                 musician.email,

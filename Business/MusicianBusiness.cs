@@ -13,47 +13,53 @@ namespace MusicHubBusiness.Business
             musicianRepository = new MusicianRepository();
         }
 
+        public Musician Get(int id)
+        {
+            Musician retorno = musicianRepository.Get(id);
+            return retorno;
+        }
+
         public Musician Create(Musician musician)
         {
             Validate(musician);
 
-            var retorno = musicianRepository.Create(musician);
+            Musician retorno = musicianRepository.Create(musician);
 
             return retorno;
         }
 
         public Musician Login(string email, string password)
         {
-            var retorno = musicianRepository.Login(email, password);
+            Musician retorno = musicianRepository.Login(email, password);
 
             return retorno;
         }
 
         public IEnumerable<Musician> SearchByName(string name)
         {
-            var retorno = musicianRepository.SearchByName(name);
+            IEnumerable<Musician> retorno = musicianRepository.SearchByName(name);
 
             return retorno;
         }
 
         public Musician Update(Musician musician)
         {
-            if(musician.id == 0) throw ValidateException("O Id deve ser preenchido!");
-            Validate(musician);
+            if (musician.id == 0) throw ValidateException("O Id deve ser preenchido!");
+            Validate(musician, true);
 
-            var retorno = musicianRepository.Update(musician);
+            Musician retorno = musicianRepository.Update(musician);
 
             return retorno;
         }
 
         private void VerifyIfEmailExists(string email)
         {
-            var retorno = musicianRepository.GetByEmail(email);
+            Musician retorno = musicianRepository.GetByEmail(email);
 
             if (retorno != null) throw ValidateException("O e-mail está em uso!");
         }
 
-        private void Validate(Musician musician)
+        private void Validate(Musician musician, bool update = false)
         {
             if (string.IsNullOrEmpty(musician.name))
             {
@@ -75,7 +81,8 @@ namespace MusicHubBusiness.Business
                 throw ValidateException("Insira sua senha");
             }
 
-            VerifyIfEmailExists(musician.email);
+            if (!update)
+                VerifyIfEmailExists(musician.email);
 
             if (musician.password.Length > 40)
             {
