@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Dapper;
 using MusicHubBusiness.Models;
+using MySql.Data.MySqlClient;
 
 namespace MusicHubBusiness.Repository
 {
@@ -14,7 +15,7 @@ namespace MusicHubBusiness.Repository
 
         public MusicalProject Create(MusicalProject musicalProject)
         {
-            using (mySqlConnection)
+            using (MySqlConnection mySqlConnection = GetConnection())
             {
                 mySqlConnection.Execute("INSERT INTO MusicalProject(name, owner_id, musical_genre_id, created_at, updated_at) VALUES (@name ,@owner_id, @musical_genre_id,@created_at, @updated_at)", new
                 {
@@ -35,7 +36,7 @@ namespace MusicHubBusiness.Repository
         {
                 IEnumerable<MusicalProject> retorno = default(IEnumerable<MusicalProject>);
 
-                using (mySqlConnection)
+                using (MySqlConnection mySqlConnection = GetConnection())
                 {
                     retorno = mySqlConnection.Query<MusicalProject>("SELECT * FROM MusicalProject WHERE musical_genre_id = @musical_genre_id", new { musical_genre_id });
                 }

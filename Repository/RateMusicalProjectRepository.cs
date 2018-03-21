@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using MusicHubBusiness.Models;
+using MySql.Data.MySqlClient;
 
 namespace MusicHubBusiness.Repository
 {
@@ -11,7 +12,7 @@ namespace MusicHubBusiness.Repository
 
         public RateMusicalProject Create(RateMusicalProject contribution)
         {
-            using (mySqlConnection)
+            using (MySqlConnection mySqlConnection = GetConnection())
             {
                 mySqlConnection.Execute("INSERT INTO RateMusicalProject(musician_id, musical_project_id, rate_value) " +
                     "VALUES (@musician_id, @musical_project_id, @rate_value)", new

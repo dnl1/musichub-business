@@ -8,15 +8,18 @@ namespace MusicHubBusiness.Repository
     public abstract class BaseRepository<T>
     {
         private string TableName;
-
-        protected MySqlConnection mySqlConnection;
+        private readonly string ConnectionString;
 
         public BaseRepository(string tableName)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["MusicHubConnectionString"].ConnectionString;
-            this.mySqlConnection = new MySqlConnection(connectionString);
+            this.ConnectionString = ConfigurationManager.ConnectionStrings["MusicHubConnectionString"].ConnectionString;
 
             this.TableName = tableName;
+        }
+
+        public MySqlConnection GetConnection()
+        {
+            return new MySqlConnection(ConnectionString);
         }
 
         public T GetLatest()
@@ -59,9 +62,9 @@ namespace MusicHubBusiness.Repository
 
         public void Execute(string sql, object parameters = null)
         {
-            using (mySqlConnection)
+            using (MySqlConnection connection = GetConnection())
             {
-                mySqlConnection.Execute(sql, parameters);
+                connection.Execute(sql, parameters);
             }
         }
 
@@ -69,9 +72,9 @@ namespace MusicHubBusiness.Repository
         {
             IEnumerable<T> retorno = default(IEnumerable<T>);
 
-            using (mySqlConnection)
+            using (MySqlConnection connection = GetConnection())
             {
-                retorno = mySqlConnection.Query<T>(sql, parameters);
+                retorno = connection.Query<T>(sql, parameters);
             }
 
             return retorno;
@@ -81,9 +84,9 @@ namespace MusicHubBusiness.Repository
         {
             T retorno = default(T);
 
-            using (mySqlConnection)
+            using (MySqlConnection connection = GetConnection())
             {
-                retorno = mySqlConnection.QueryFirstOrDefault<T>(sql, parameters);
+                retorno = connection.QueryFirstOrDefault<T>(sql, parameters);
             }
 
             return retorno;

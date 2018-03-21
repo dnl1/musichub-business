@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Dapper;
 using MusicHubBusiness.Enum;
 using MusicHubBusiness.Models;
+using MySql.Data.MySqlClient;
 
 namespace MusicHubBusiness.Repository
 {
@@ -14,7 +15,7 @@ namespace MusicHubBusiness.Repository
 
         public Contribution Create(Contribution contribution)
         {
-            using (mySqlConnection)
+            using (MySqlConnection mySqlConnection = GetConnection())
             {
                 mySqlConnection.Execute("INSERT INTO Contribution(musician_id, musical_project_id, musical_project_instrument_id, musical_genre_id, status_id, timing, type_id, created_at) " +
                     "VALUES (@musician_id, @musical_project_id, @musical_project_instrument_id, @musical_genre_id, @status_id, @timing, @type_id, @created_at)", new
@@ -38,7 +39,7 @@ namespace MusicHubBusiness.Repository
         internal IEnumerable<Contribution> GetByMusicalProjectId(int musical_project_id)
         {
             IEnumerable<Contribution> retorno = null;
-            using (mySqlConnection)
+            using (MySqlConnection mySqlConnection = GetConnection())
             {
                 retorno = mySqlConnection.Query<Contribution>("SELECT * FROM Contribution WHERE musical_project_id = @musical_project_id", new { musical_project_id });
 
@@ -50,7 +51,7 @@ namespace MusicHubBusiness.Repository
         internal IEnumerable<Contribution> GetFreeContributions(int id)
         {
             IEnumerable<Contribution> retorno = null;
-            using (mySqlConnection)
+            using (MySqlConnection mySqlConnection = GetConnection())
             {
                 retorno = mySqlConnection.Query<Contribution>
                     ("SELECT * FROM Contribution WHERE musician_id = @musician_id AND type_id = @type_id", new

@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using MusicHubBusiness.Models;
+using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,7 +14,7 @@ namespace MusicHubBusiness.Repository
 
         public Musician Create(Musician musician)
         {
-            using (mySqlConnection)
+            using (MySqlConnection mySqlConnection = GetConnection())
             {
                 mySqlConnection.Execute("INSERT INTO Musician(name, email, password, birth_date) VALUES (@name,@email,@password,@birth_date)", new
                 {
@@ -32,7 +33,7 @@ namespace MusicHubBusiness.Repository
         public Musician Login(string email, string password)
         {
             Musician retorno = null;
-            using (mySqlConnection)
+            using (MySqlConnection mySqlConnection = GetConnection())
             {
                 retorno = mySqlConnection.Query<Musician>("SELECT * FROM Musician WHERE email = @email AND password = @password", new
                 {
