@@ -104,6 +104,7 @@
     <Compile Include="Audio\AudioConverter.cs" />
     <Compile Include="Audio\FileArchive.cs" />
     <Compile Include="Audio\FileHandler.cs" />
+    <Compile Include="Bearer\BearerDatabaseManager.cs" />
     <Compile Include="Business\BusinessBase.cs" />
     <Compile Include="Business\InstrumentBusiness.cs" />
     <Compile Include="Business\MusicalGenreBusiness.cs" />

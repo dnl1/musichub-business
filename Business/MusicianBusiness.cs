@@ -1,5 +1,6 @@
 ﻿using MusicHubBusiness.Models;
 using MusicHubBusiness.Repository;
+using System;
 using System.Collections.Generic;
 
 namespace MusicHubBusiness.Business
@@ -57,6 +58,12 @@ namespace MusicHubBusiness.Business
             Musician retorno = musicianRepository.GetByEmail(email);
 
             if (retorno != null) throw ValidateException("O e-mail está em uso!");
+        }
+
+        public IEnumerable<Musician> GetAll()
+        {
+            IEnumerable<Musician> retorno = musicianRepository.GetAll();
+            return retorno;
         }
 
         private void Validate(Musician musician, bool update = false)

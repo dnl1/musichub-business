@@ -54,7 +54,7 @@ namespace MusicHubBusiness.Repository
 
         public void Delete(int id)
         {
-            Execute($"DELETE {this.TableName} WHERE ID = @Id", new
+            Execute($"DELETE FROM {this.TableName} WHERE ID = @Id", new
             {
                 ID = id
             });

@@ -1,5 +1,6 @@
 ﻿using BearerAuthentication;
 using MusicHubBusiness.Amazon;
+using MusicHubBusiness.Audio;
 using MusicHubBusiness.Models;
 using MusicHubBusiness.Repository;
 using System;
@@ -43,6 +44,12 @@ namespace MusicHubBusiness.Business
             var retorno = musicalProjectRepository.Get(musical_project_id);
 
             return retorno != null;
+        }
+
+        public void SaveAudio(string audioPath, string folderSave, int idBaseMusicalProjectInstrument)
+        {
+            string saveFilePath = Path.Combine(folderSave, $"{idBaseMusicalProjectInstrument.ToString()}.mp3");
+            File.Copy(audioPath, saveFilePath);
         }
     }
 }
