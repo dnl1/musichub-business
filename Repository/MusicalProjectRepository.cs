@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using MusicHubBusiness.Models;
 using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 
 namespace MusicHubBusiness.Repository
@@ -30,13 +31,13 @@ namespace MusicHubBusiness.Repository
             return musicalProject;
         }
 
-        internal IEnumerable<MusicalProject> SearchByMusicalGenre(int musical_genre_id)
+        internal IEnumerable<MusicalProject> SearchByMusicalGenre(int musical_genre_id, int owner_id)
         {
             IEnumerable<MusicalProject> retorno = default(IEnumerable<MusicalProject>);
 
             using (MySqlConnection mySqlConnection = GetConnection())
             {
-                retorno = mySqlConnection.Query<MusicalProject>("SELECT * FROM MusicalProject WHERE musical_genre_id = @musical_genre_id", new { musical_genre_id });
+                retorno = mySqlConnection.Query<MusicalProject>("SELECT * FROM MusicalProject WHERE musical_genre_id = @musical_genre_id AND owner_id <> @owner_id", new { musical_genre_id, owner_id });
             }
 
             return retorno;

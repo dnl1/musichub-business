@@ -33,7 +33,9 @@ namespace MusicHubBusiness.Business
         public IEnumerable<MusicalProject> SearchByMusicalGenre(int musical_genre_id)
         {
             MusicalProjectRepository musicalProjectRepository = new MusicalProjectRepository();
-            var retorno = musicalProjectRepository.SearchByMusicalGenre(musical_genre_id);
+
+            int owner_id = Utitilities.GetLoggedUserId();
+            var retorno = musicalProjectRepository.SearchByMusicalGenre(musical_genre_id, owner_id);
 
             return retorno;
         }

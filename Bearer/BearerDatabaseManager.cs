@@ -31,8 +31,8 @@ namespace BearerAuthentication
 
         private void GetUidFromHeader()
         {
-            if (string.IsNullOrEmpty(uid))
-            {
+            string tempUid = uid;
+
                 uid = HttpContext.Current.Request.Headers["uid"];
 
                 if (string.IsNullOrEmpty(uid))
@@ -44,8 +44,9 @@ namespace BearerAuthentication
                     JObject jObject = JObject.Parse(bodyText);
 
                     uid = jObject["email"].ToString() ?? jObject["uid"].ToString();
-                }
             }
+
+            if (string.IsNullOrEmpty(uid)) uid = tempUid;
         }
 
         public DateTime? GetExpire()
