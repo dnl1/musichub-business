@@ -104,6 +104,12 @@ namespace MusicHubBusiness.Business
             return retorno != null;
         }
 
+        public void Finish(int id)
+        {
+            MusicalProjectRepository musicalProjectRepository = new MusicalProjectRepository();
+            musicalProjectRepository.Finish(id);
+        }
+
         public IEnumerable<MusicalProject> GetProjectsByOwnerId(int owner_id)
         {
             MusicalProjectRepository musicalProjectRepository = new MusicalProjectRepository();

@@ -15,5 +15,6 @@ namespace MusicHubBusiness.Models
         public int musical_genre_id { get; set; }
         public DateTime created_at { get; set; }
         public DateTime updated_at { get; set; }
+        public int? finish { get; set; }
     }
 }

@@ -76,6 +76,8 @@ namespace MusicHubBusiness.Audio
                     }
                 }
 
+                CheckAddBinPath();
+
                 // convert wave stream from mixer to mp3
                 var wave32 = new Wave32To16Stream(mixer);
                 var mp3Writer = new LameMP3FileWriter(outputFile, wave32.WaveFormat, 128);
@@ -92,6 +94,21 @@ namespace MusicHubBusiness.Audio
             {
                 // TODO: handle exception
                 throw;
+            }
+        }
+
+        private static void CheckAddBinPath()
+        {
+            // find path to 'bin' folder
+            var binPath = Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "bin" });
+            // get current search path from environment
+            var path = Environment.GetEnvironmentVariable("PATH") ?? "";
+
+            // add 'bin' folder to search path if not already present
+            if (!path.Split(Path.PathSeparator).Contains(binPath, StringComparer.CurrentCultureIgnoreCase))
+            {
+                path = string.Join(Path.PathSeparator.ToString(), new string[] { path, binPath });
+                Environment.SetEnvironmentVariable("PATH", path);
             }
         }
 

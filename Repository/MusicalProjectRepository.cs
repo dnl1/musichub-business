@@ -54,5 +54,10 @@ namespace MusicHubBusiness.Repository
 
             return retorno;
         }
+
+        internal void Finish(int id)
+        {
+            Execute("UPDATE MusicalProject SET finish = 1 WHERE id = @id", new { id });
+        }
     }
 }

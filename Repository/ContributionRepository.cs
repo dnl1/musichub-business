@@ -71,7 +71,7 @@ namespace MusicHubBusiness.Repository
                 retorno = mySqlConnection.Query<Contribution>
                     (
                     @"SELECT DISTINCT C.* FROM Contribution C
-                    INNER JOIN MusicalProjectInstrument MPI ON C.musical_project_id = MPI.musical_project_id
+                    INNER JOIN MusicalProjectInstrument MPI ON C.musical_project_instrument_id = MPI.id
                     WHERE C.musical_project_id = @musicalProjectId AND MPI.instrument_id = @instrumentId", 
                     new
                     {
