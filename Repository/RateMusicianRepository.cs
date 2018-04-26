@@ -10,22 +10,56 @@ namespace MusicHubBusiness.Repository
         {
         }
 
-        public RateMusician Create(RateMusician contribution)
+        public RateMusician Create(RateMusician rateMusician)
         {
             using (MySqlConnection mySqlConnection = GetConnection())
             {
                 mySqlConnection.Execute("INSERT INTO RateMusician(musician_owner_id, musician_target_id, rate_value) " +
                     "VALUES (@musician_owner_id, @musician_target_id, @rate_value)", new
-                {
-                    contribution.musician_owner_id,
-                    contribution.musician_target_id,
-                    contribution.rate_value
-                });
+                    {
+                        rateMusician.musician_owner_id,
+                        rateMusician.musician_target_id,
+                        rateMusician.rate_value
+                    });
 
-                contribution = GetLatest();
+                rateMusician = GetLatest();
             }
 
-            return contribution;
+            return rateMusician;
+        }
+
+        internal RateMusician Update(RateMusician rateMusician)
+        {
+            using (MySqlConnection mySqlConnection = GetConnection())
+            {
+                mySqlConnection.Execute("UPDATE RateMusician SET rate_value = @rate_value WHERE id = @id", new
+                {
+                    rateMusician.rate_value,
+                    rateMusician.id,
+                });
+
+                rateMusician = Get(rateMusician.id);
+            }
+
+            return rateMusician;
+        }
+
+        internal RateMusician GetByOwnerId(int musician_target_id, int musician_owner_id)
+        {
+            RateMusician retorno = null;
+
+            using (MySqlConnection mySqlConnection = GetConnection())
+            {
+                mySqlConnection.Execute("SELECT * FROM RateMusician WHERE musician_owner_id = @musician_owner_id AND musician_target_id = @musician_target_id", new
+                {
+                    musician_owner_id,
+                    musician_target_id
+                });
+
+                retorno = GetLatest();
+            }
+
+            return retorno;
         }
     }
 }

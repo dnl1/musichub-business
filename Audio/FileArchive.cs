@@ -21,12 +21,10 @@ namespace MusicHubBusiness.Audio
         public FileArchive(string strBase64)
         {
             Base64 = strBase64;
-
-            string[] file = strBase64.Split(';');
-            ContentType = file[0].Replace("data:", string.Empty);
+            ContentType = "audio/mp3";
 
             FileHandler fileHandler = new FileHandler();
-            FileBytes = fileHandler.Base64ToBytes(file[1]);
+            FileBytes = fileHandler.Base64ToBytes(strBase64);
         }
     }
 }

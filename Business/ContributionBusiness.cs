@@ -21,17 +21,12 @@ namespace MusicHubBusiness.Business
             return retorno;
         }
 
-        public IEnumerable<Musician> GetByMusicalProjectId(int musical_project_id)
+        public IEnumerable<Contribution> GetByMusicalProjectId(int musical_project_id)
         {
             ContributionRepository contributionRepository = new ContributionRepository();
             IEnumerable<Contribution> contributions = contributionRepository.GetByMusicalProjectId(musical_project_id);
 
-            IEnumerable<int> musician_ids  = contributions.Select(c => c.musician_id);
-
-            MusicianRepository musicianRepository = new MusicianRepository();
-            IEnumerable<Musician> retorno = musicianRepository.GetMusicians(musician_ids);
-
-            return retorno;
+            return contributions;
         }
 
         public IEnumerable<Contribution> GetFreeContributions(int id)
@@ -53,6 +48,20 @@ namespace MusicHubBusiness.Business
             if (contribution.status_id == 0) throw ValidateException("Status é requerido");
             if (contribution.type_id == 0) throw ValidateException("Tipo de contribuição é requerido");
             if (contribution.musical_genre_id == 0) throw ValidateException("Genero musical é requerido");
+        }
+
+        public IEnumerable<Contribution> GetByMusicalProjectAndIntrument(int musicalProjectId, int instrumentId)
+        {
+            ContributionRepository contributionRepository = new ContributionRepository();
+            IEnumerable<Contribution> contributions = contributionRepository.GetByMusicalProjectAndIntrument(musicalProjectId, instrumentId);
+
+            return contributions; ;
+        }
+
+        public void Approve(int contributionId)
+        {
+            ContributionRepository contributionRepository = new ContributionRepository();
+            contributionRepository.Approve(contributionId);
         }
     }
 }

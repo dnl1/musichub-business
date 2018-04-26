@@ -10,24 +10,45 @@ namespace MusicHubBusiness.Business
 {
     public class RateMusicianBusiness : BusinessBase
     {
+        private RateMusicianRepository _rateMusicianRepository;
+
+        public RateMusicianBusiness()
+        {
+            _rateMusicianRepository = new RateMusicianRepository();
+
+        }
+
         public RateMusician Create(RateMusician rateMusician)
         {
             PopulateDefaultProperties(rateMusician);
 
             Validate(rateMusician);
 
-            RateMusicianRepository rateMusicianRepository = new RateMusicianRepository();
-            var retorno = rateMusicianRepository.Create(rateMusician);
+            RateMusician objExistente = GetByOwnerId(rateMusician.musician_target_id, rateMusician.musician_owner_id);
+            RateMusician retorno = null;
 
+            if (objExistente != null && objExistente.id > 0)
+            {
+                rateMusician.id = objExistente.id;
+                retorno = _rateMusicianRepository.Update(rateMusician);
+            }
+            else
+            {
+                retorno = _rateMusicianRepository.Create(rateMusician);
+            }
+
+            return retorno;
+        }
+
+        public RateMusician GetByOwnerId(int musician_target_id, int musician_owner_id)
+        {
+            RateMusician retorno = _rateMusicianRepository.GetByOwnerId(musician_target_id, musician_owner_id);
             return retorno;
         }
 
         private void PopulateDefaultProperties(RateMusician rateMusician)
         {
-            BearerToken bearerToken = new BearerToken();
-            var activeToken = bearerToken.GetActiveToken();
-
-            rateMusician.musician_owner_id = int.Parse(activeToken.client);
+            rateMusician.musician_owner_id = Utitilities.GetLoggedUserId();
         }
 
         private void Validate(RateMusician rateMusician)

@@ -17,5 +17,13 @@ namespace MusicHubBusiness.Business
 
             return retorno;
         }
+
+        public MusicalGenre Get(int id)
+        {
+            MusicalGenreRepository musicalGenreRepository = new MusicalGenreRepository();
+            var retorno = musicalGenreRepository.Get(id);
+
+            return retorno;
+        }
     }
 }

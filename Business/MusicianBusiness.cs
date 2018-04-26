@@ -2,6 +2,7 @@
 using MusicHubBusiness.Repository;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MusicHubBusiness.Business
 {
@@ -95,6 +96,19 @@ namespace MusicHubBusiness.Business
             {
                 throw ValidateException("O tamanho máximo da senha é 40 caracteres");
             }
+        }
+
+        public IEnumerable<Musician> GetByMusicalProjectId(int musical_project_id)
+        {
+            ContributionBusiness contributionBusiness = new ContributionBusiness();
+            var contributions = contributionBusiness.GetByMusicalProjectId(musical_project_id);
+
+            IEnumerable<int> musician_ids = contributions.Select(c => c.musician_id);
+
+            MusicianRepository musicianRepository = new MusicianRepository();
+            IEnumerable<Musician> retorno = musicianRepository.GetMusicians(musician_ids);
+
+            return retorno;
         }
     }
 }

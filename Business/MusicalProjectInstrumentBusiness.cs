@@ -4,6 +4,7 @@ using MusicHubBusiness.Audio;
 using MusicHubBusiness.Models;
 using MusicHubBusiness.Repository;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Web;
 
@@ -46,10 +47,18 @@ namespace MusicHubBusiness.Business
             return retorno != null;
         }
 
-        public void SaveAudio(string audioPath, string folderSave, int idBaseMusicalProjectInstrument)
+        public void SaveAudio(string audioPath, string folderSave, int contributionId)
         {
-            string saveFilePath = Path.Combine(folderSave, $"{idBaseMusicalProjectInstrument.ToString()}.mp3");
+            string saveFilePath = Path.Combine(folderSave, $"{contributionId.ToString()}.mp3");
             File.Copy(audioPath, saveFilePath);
+        }
+
+        public IEnumerable<MusicalProjectInstrument> GetByMusicalProject(int musicalProjectId)
+        {
+            MusicalProjectInstrumentRepository musicalProjectInstrumentRepository = new MusicalProjectInstrumentRepository();
+            IEnumerable<MusicalProjectInstrument> retorno = musicalProjectInstrumentRepository.GetByMusicalProject(musicalProjectId);
+
+            return retorno;
         }
     }
 }

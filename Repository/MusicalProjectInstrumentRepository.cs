@@ -1,4 +1,6 @@
-﻿using Dapper;
+﻿using System;
+using System.Collections.Generic;
+using Dapper;
 using MusicHubBusiness.Models;
 using MySql.Data.MySqlClient;
 
@@ -25,6 +27,14 @@ namespace MusicHubBusiness.Repository
             }
 
             return musicalProjectInstrument;
+        }
+
+        internal IEnumerable<MusicalProjectInstrument> GetByMusicalProject(int musicalProjectId)
+        {
+            string sql = "SELECT * FROM MusicalProjectInstrument WHERE musical_project_id = @musicalProjectId";
+            IEnumerable<MusicalProjectInstrument> retorno = Query(sql, new { musicalProjectId });
+
+            return retorno;
         }
     }
 }

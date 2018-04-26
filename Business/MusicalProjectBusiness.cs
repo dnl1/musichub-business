@@ -88,6 +88,14 @@ namespace MusicHubBusiness.Business
             return retorno != null;
         }
 
+        public MusicalProject Get(int id)
+        {
+            MusicalProjectRepository musicalProjectRepository = new MusicalProjectRepository();
+            MusicalProject retorno = musicalProjectRepository.Get(id);
+
+            return retorno;
+        }
+
         private bool VerifyIfGenreExists(int gender_id)
         {
             MusicalGenreRepository musicalGenreRepository = new MusicalGenreRepository();
