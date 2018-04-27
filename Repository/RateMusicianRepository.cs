@@ -50,13 +50,11 @@ namespace MusicHubBusiness.Repository
 
             using (MySqlConnection mySqlConnection = GetConnection())
             {
-                mySqlConnection.Execute("SELECT * FROM RateMusician WHERE musician_owner_id = @musician_owner_id AND musician_target_id = @musician_target_id", new
+                retorno = mySqlConnection.QueryFirstOrDefault<RateMusician>("SELECT * FROM RateMusician WHERE musician_owner_id = @musician_owner_id AND musician_target_id = @musician_target_id", new
                 {
                     musician_owner_id,
                     musician_target_id
                 });
-
-                retorno = GetLatest();
             }
 
             return retorno;
