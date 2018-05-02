@@ -10,25 +10,46 @@ namespace MusicHubBusiness.Business
 {
     public class RateMusicalProjectBusiness : BusinessBase
     {
+        private RateMusicalProjectRepository _rateMusicalProjectRepository;
+
+        public RateMusicalProjectBusiness()
+        {
+            _rateMusicalProjectRepository = new RateMusicalProjectRepository();
+        }
         public RateMusicalProject Create(RateMusicalProject rateMusicalProject)
         {
             PopulateDefaultProperties(rateMusicalProject);
 
             Validate(rateMusicalProject);
 
-            RateMusicalProjectRepository rateMusicalProjectRepository = new RateMusicalProjectRepository();
-            var retorno = rateMusicalProjectRepository.Create(rateMusicalProject);
+            RateMusicalProject objExistente = GetByUserAndProjectId(rateMusicalProject.musical_project_id, rateMusicalProject.musician_id);
+            RateMusicalProject retorno = null;
+
+            if (objExistente != null && objExistente.id > 0)
+            {
+                rateMusicalProject.id = objExistente.id;
+                retorno = _rateMusicalProjectRepository.Update(rateMusicalProject);
+            }
+            else
+            {
+                retorno = _rateMusicalProjectRepository.Create(rateMusicalProject);
+            }
+
+            retorno = _rateMusicalProjectRepository.Create(rateMusicalProject);
 
             return retorno;
         }
 
+        public RateMusicalProject GetByUserAndProjectId(int musicalProjectId, int userId)
+        {
+            return _rateMusicalProjectRepository.GetByUserAndProjectId(musicalProjectId, userId);
+        }
+
         private void PopulateDefaultProperties(RateMusicalProject rateMusicalProject)
         {
-            BearerToken bearerToken = new BearerToken();
-            var activeToken = bearerToken.GetActiveToken();
-
-            rateMusicalProject.musician_id = int.Parse(activeToken.client);
+            rateMusicalProject.musician_id = Utitilities.GetLoggedUserId();
         }
+
 
         private void Validate(RateMusicalProject rateMusicalProject)
         {
